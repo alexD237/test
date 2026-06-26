@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import WaveDivider from "./WaveDivider";
-import logo from "../assets/logo-pad.svg";
+import logo from "../assets/logo-pad.png";
 import "./Layout.css";
 
 const NAV = [

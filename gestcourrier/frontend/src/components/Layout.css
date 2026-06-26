@@ -29,9 +29,10 @@
   width: 46px;
   height: 46px;
   flex-shrink: 0;
+  object-fit: contain;
   background: #fff;
   border-radius: 10px;
-  padding: 5px;
+  padding: 4px;
 }
 .sidebar-brand strong {
   font-family: var(--font-title);

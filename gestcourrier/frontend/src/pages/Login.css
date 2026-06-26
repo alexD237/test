@@ -18,9 +18,9 @@
 
 .login-logo {
   display: block;
-  width: 88px;
-  height: 80px;
-  margin: 0 auto 16px;
+  width: 150px;
+  height: auto;
+  margin: 0 auto 8px;
 }
 
 .login-card h1 {

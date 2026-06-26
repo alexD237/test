@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import logo from "../assets/logo-pad.svg";
+import logo from "../assets/logo-pad.png";
 import "./Login.css";
 
 export default function Login() {
@@ -30,7 +30,6 @@ export default function Login() {
     <div className="login-page">
       <form className="login-card" onSubmit={onSubmit}>
         <img src={logo} alt="Port Autonome de Douala" className="login-logo" />
-        <span className="eyebrow">Port Autonome de Douala · DRH</span>
         <h1>GestCourrier DRH</h1>
         <p className="login-sub">Numérisation et archivage des courriers</p>
 
