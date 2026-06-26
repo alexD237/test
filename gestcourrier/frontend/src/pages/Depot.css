@@ -1,0 +1,62 @@
+.depot-form {
+  background: var(--canvas);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 760px;
+  box-shadow: 0 1px 3px rgba(14, 31, 61, 0.08);
+}
+
+.depot-type {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.depot-type label {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.depot-type label.actif {
+  border-color: var(--brand-sky);
+  background: #f0f9fd;
+}
+
+.depot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 24px;
+}
+
+.depot-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  cursor: pointer;
+  color: var(--fg2);
+  text-align: center;
+}
+.depot-upload:hover {
+  border-color: var(--brand-sky);
+}
+.depot-upload input {
+  display: none;
+}
+
+.depot-form .btn-primary {
+  margin-top: 8px;
+}
+
+@media (max-width: 720px) {
+  .depot-grid {
+    grid-template-columns: 1fr;
+  }
+}

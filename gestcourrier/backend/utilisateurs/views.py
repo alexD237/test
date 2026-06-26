@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-# Create your views here.
+from utilisateurs.serializers import GestCourrierTokenSerializer
+
+
+class LoginView(TokenObtainPairView):
+    serializer_class = GestCourrierTokenSerializer

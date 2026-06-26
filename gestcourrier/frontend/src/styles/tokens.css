@@ -1,0 +1,22 @@
+/* Design System PAD — GestCourrier DRH (CDC 4.1 / 4.2) */
+:root {
+  --brand-navy: #1c3d78;
+  --brand-sky: #2baee0;
+  --brand-sky-deep: #1d8fbd;
+  --brand-lime: #cfd400;
+  --canvas: #ffffff;
+  --surface-soft: #f4f7fb;
+  --fg1: #0e1f3d;
+  --fg2: #3a4a63;
+  --border: #d9e1ec;
+  --danger: #c0392b;
+
+  --font-title: "Archivo", system-ui, sans-serif;
+  --font-body: "Source Sans 3", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --sidebar-width: 240px;
+  --content-max: 1200px;
+  --space: 8px;
+  --radius: 8px;
+}

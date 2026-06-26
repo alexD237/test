@@ -1,0 +1,122 @@
+@import "./tokens.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--fg1);
+  background: var(--surface-soft);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-title);
+  font-weight: 800;
+  color: var(--fg1);
+  margin: 0;
+}
+
+a {
+  color: var(--brand-sky-deep);
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--brand-sky-deep);
+  border-bottom: 3px solid var(--brand-lime);
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+/* Boutons */
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0 18px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.btn:focus-visible {
+  outline: 3px solid var(--brand-sky);
+  outline-offset: 2px;
+}
+.btn-primary {
+  background: var(--brand-navy);
+  color: #fff;
+}
+.btn-primary:disabled {
+  background: var(--border);
+  color: var(--fg2);
+  cursor: not-allowed;
+}
+.btn-accent {
+  background: var(--brand-sky);
+  color: #fff;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--brand-navy);
+  border: 1px solid var(--border);
+}
+
+/* Champs */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.field label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--fg2);
+}
+.field input,
+.field select,
+.field textarea {
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--canvas);
+}
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: 3px solid var(--brand-sky);
+  outline-offset: 1px;
+}
+.field-error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

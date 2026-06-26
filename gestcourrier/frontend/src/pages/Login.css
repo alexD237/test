@@ -1,0 +1,32 @@
+.login-page {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand-navy);
+  padding: 24px;
+}
+
+.login-card {
+  background: var(--canvas);
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 12px 40px rgba(14, 31, 61, 0.25);
+}
+
+.login-card h1 {
+  font-size: 28px;
+  margin: 12px 0 4px;
+}
+
+.login-sub {
+  color: var(--fg2);
+  margin: 0 0 24px;
+}
+
+.login-card .btn-primary {
+  width: 100%;
+  margin-top: 8px;
+}
