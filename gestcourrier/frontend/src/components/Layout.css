@@ -14,20 +14,34 @@
 }
 
 .sidebar-brand {
-  padding: 0 24px 24px;
+  padding: 0 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar-brand > div {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  min-width: 0;
+}
+.sidebar-logo {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 10px;
+  padding: 5px;
+}
+.sidebar-brand strong {
+  font-family: var(--font-title);
+  font-size: 20px;
 }
 .sidebar-eyebrow {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--brand-sky);
-}
-.sidebar-brand strong {
-  font-family: var(--font-title);
-  font-size: 22px;
 }
 
 .sidebar-nav {
@@ -52,6 +66,16 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
+.sidebar-section {
+  margin-top: 20px;
+  padding: 8px 24px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-sky);
+}
+
 .sidebar-profile {
   padding: 16px 24px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
@@ -71,6 +95,10 @@
   background: transparent;
   color: #fff;
   border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-wave {
+  margin-top: 20px;
 }
 
 .content {

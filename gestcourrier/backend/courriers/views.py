@@ -6,6 +6,8 @@ from rest_framework.decorators import action
 from courriers.models import Courrier
 from courriers.permissions import CourrierPermission
 from courriers.serializers import CourrierSerializer
+from utilisateurs.audit import enregistrer
+from utilisateurs.models import AuditLog
 
 ORDERINGS = {
     "date": "date_courrier",
@@ -56,16 +58,28 @@ class CourrierViewSet(viewsets.ModelViewSet):
         return qs
 
     def perform_create(self, serializer):
-        serializer.save(depose_par=self.request.user)
+        courrier = serializer.save(depose_par=self.request.user)
+        enregistrer(self.request, AuditLog.Action.DEPOT, courrier, courrier.numero)
+
+    def perform_update(self, serializer):
+        courrier = serializer.save()
+        enregistrer(self.request, AuditLog.Action.MODIFICATION, courrier, courrier.numero)
 
     def perform_destroy(self, instance):
         # Suppression logique (CDC 3.3) — le fichier et la ligne sont conservés.
         instance.supprime = True
         instance.save(update_fields=["supprime"])
+        enregistrer(self.request, AuditLog.Action.SUPPRESSION, instance, instance.numero)
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        enregistrer(request, AuditLog.Action.CONSULTATION, self.get_object(), self.get_object().numero)
+        return response
 
     @action(detail=True, methods=["get"])
     def pdf(self, request, pk=None):
         courrier = self.get_object()
+        enregistrer(request, AuditLog.Action.TELECHARGEMENT, courrier, courrier.numero)
         return FileResponse(
             courrier.fichier_pdf.open("rb"),
             content_type="application/pdf",

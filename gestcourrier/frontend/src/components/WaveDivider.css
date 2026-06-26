@@ -1,0 +1,27 @@
+.wave-divider {
+  background: var(--brand-navy);
+  overflow: hidden;
+  line-height: 0;
+}
+.wave-divider svg {
+  display: block;
+  width: 110%;
+  height: 54px;
+  animation: wave-divider-houle 12s ease-in-out infinite alternate;
+}
+
+@keyframes wave-divider-houle {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-9%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave-divider svg {
+    width: 100%;
+    animation: none;
+  }
+}

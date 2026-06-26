@@ -16,6 +16,13 @@
   box-shadow: 0 12px 40px rgba(14, 31, 61, 0.25);
 }
 
+.login-logo {
+  display: block;
+  width: 88px;
+  height: 80px;
+  margin: 0 auto 16px;
+}
+
 .login-card h1 {
   font-size: 28px;
   margin: 12px 0 4px;

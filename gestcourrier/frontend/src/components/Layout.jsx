@@ -1,5 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import WaveDivider from "./WaveDivider";
+import logo from "../assets/logo-pad.svg";
 import "./Layout.css";
 
 const NAV = [
@@ -8,9 +10,16 @@ const NAV = [
   { to: "/reporting", label: "Reporting" },
 ];
 
+const NAV_ADMIN = [
+  { to: "/admin/utilisateurs", label: "Utilisateurs" },
+  { to: "/admin/audit", label: "Journal d'audit" },
+  { to: "/admin/stats", label: "Statistiques" },
+];
+
 export default function Layout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const estAdmin = user?.role === "ADMIN";
 
   function onLogout() {
     logout();
@@ -21,8 +30,11 @@ export default function Layout() {
     <div className="layout">
       <aside className="sidebar">
         <div className="sidebar-brand">
-          <span className="sidebar-eyebrow">PAD · DRH</span>
-          <strong>GestCourrier</strong>
+          <img src={logo} alt="Port Autonome de Douala" className="sidebar-logo" />
+          <div>
+            <span className="sidebar-eyebrow">PAD · DRH</span>
+            <strong>GestCourrier</strong>
+          </div>
         </div>
         <nav className="sidebar-nav">
           {NAV.map((item) => (
@@ -30,6 +42,16 @@ export default function Layout() {
               {item.label}
             </NavLink>
           ))}
+          {estAdmin && (
+            <>
+              <span className="sidebar-section">Administration</span>
+              {NAV_ADMIN.map((item) => (
+                <NavLink key={item.to} to={item.to}>
+                  {item.label}
+                </NavLink>
+              ))}
+            </>
+          )}
         </nav>
         <div className="sidebar-profile">
           <div>
@@ -40,6 +62,7 @@ export default function Layout() {
             Déconnexion
           </button>
         </div>
+        <WaveDivider className="sidebar-wave" />
       </aside>
       <main className="content">
         <Outlet />
