@@ -126,3 +126,61 @@ class CourrierTests(APITestCase):
         courrier.refresh_from_db()
         self.assertTrue(courrier.supprime)
         self.assertEqual(self.client.get("/api/courriers/").data["count"], 0)
+
+
+class RechercheTests(APITestCase):
+    def setUp(self):
+        media = tempfile.mkdtemp()
+        override = override_settings(MEDIA_ROOT=media)
+        override.enable()
+        self.addCleanup(override.disable)
+        self.agent = Utilisateur.objects.create_user(
+            username="5487-T", password="a", nom_complet="Agent BC", role=Utilisateur.Role.AGENT
+        )
+        token = self.client.post(
+            "/api/auth/login/", {"username": "5487-T", "password": "a"}
+        ).data["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
+
+    def depot(self, numero, type_courrier="ENTRANT", objet="objet", correspondant="DG", **extra):
+        data = {
+            "numero": numero,
+            "type_courrier": type_courrier,
+            "date_courrier": extra.pop("date", "2026-06-25"),
+            "correspondant": correspondant,
+            "objet": objet,
+            "fichier_pdf": pdf_upload(),
+        }
+        if type_courrier == "ENTRANT":
+            data["service_interne"] = extra.pop("service_interne", "DRH")
+        else:
+            data["signataire"] = extra.pop("signataire", "DG")
+        data.update(extra)
+        return self.client.post("/api/courriers/", data, format="multipart")
+
+    def numeros(self, params):
+        return {c["numero"] for c in self.client.get("/api/courriers/", params).data["results"]}
+
+    def test_recherche_full_text_sur_objet(self):
+        self.depot("004901-26", objet="Demande de congé annuel")
+        self.depot("004902-26", objet="Convocation réunion budget")
+        self.assertEqual(self.numeros({"q": "congé"}), {"004901-26"})
+        self.assertEqual(self.numeros({"q": "budget"}), {"004902-26"})
+
+    def test_filtre_type(self):
+        self.depot("004901-26", "ENTRANT")
+        self.depot("002201-26", "SORTANT")
+        self.assertEqual(self.numeros({"type": "SORTANT"}), {"002201-26"})
+
+    def test_filtre_numero_partiel(self):
+        self.depot("004901-26")
+        self.depot("004902-26")
+        self.assertEqual(self.numeros({"numero": "4901"}), {"004901-26"})
+
+    def test_filtre_plage_de_dates(self):
+        self.depot("004901-26", date="2026-01-10")
+        self.depot("004902-26", date="2026-06-20")
+        self.assertEqual(
+            self.numeros({"date_debut": "2026-05-01", "date_fin": "2026-12-31"}),
+            {"004902-26"},
+        )

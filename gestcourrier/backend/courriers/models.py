@@ -1,6 +1,8 @@
 import uuid
 
 from django.conf import settings
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.text import slugify
@@ -43,9 +45,12 @@ class Courrier(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="courriers"
     )
     supprime = models.BooleanField(default=False)
+    # Alimenté par un trigger PostgreSQL (config 'french') — voir migration.
+    search_vector = SearchVectorField(null=True)
 
     class Meta:
         ordering = ["-date_courrier", "-date_depot"]
+        indexes = [GinIndex(fields=["search_vector"])]
 
     def __str__(self):
         return f"{self.numero} ({self.type_courrier})"
