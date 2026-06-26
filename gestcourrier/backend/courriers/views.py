@@ -1,7 +1,9 @@
 from django.contrib.postgres.search import SearchQuery, SearchRank
+from django.db.models import Count
 from django.http import FileResponse
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from courriers.models import Courrier
 from courriers.permissions import CourrierPermission
@@ -15,6 +17,9 @@ ORDERINGS = {
     "numero": "numero",
     "-numero": "-numero",
 }
+
+# Champs proposés en autocomplétion à partir de l'historique des saisies.
+CHAMPS_SUGGESTIONS = {"correspondant", "service_interne", "signataire"}
 
 
 class CourrierViewSet(viewsets.ModelViewSet):
@@ -75,6 +80,20 @@ class CourrierViewSet(viewsets.ModelViewSet):
         response = super().retrieve(request, *args, **kwargs)
         enregistrer(request, AuditLog.Action.CONSULTATION, self.get_object(), self.get_object().numero)
         return response
+
+    @action(detail=False, methods=["get"])
+    def suggestions(self, request):
+        champ = request.query_params.get("champ")
+        if champ not in CHAMPS_SUGGESTIONS:
+            return Response([])
+        valeurs = (
+            Courrier.objects.filter(supprime=False)
+            .exclude(**{champ: ""})
+            .values(champ)
+            .annotate(n=Count("id"))
+            .order_by("-n")[:50]
+        )
+        return Response([v[champ] for v in valeurs])
 
     @action(detail=True, methods=["get"])
     def pdf(self, request, pk=None):

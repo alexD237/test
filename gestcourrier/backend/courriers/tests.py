@@ -184,3 +184,17 @@ class RechercheTests(APITestCase):
             self.numeros({"date_debut": "2026-05-01", "date_fin": "2026-12-31"}),
             {"004902-26"},
         )
+
+    def test_suggestions_par_frequence(self):
+        self.depot("004901-26", correspondant="Direction Générale", service_interne="DRH")
+        self.depot("004902-26", correspondant="Direction Générale", service_interne="CMS")
+        self.depot("004903-26", correspondant="Ministère", service_interne="DRH")
+        services = self.client.get("/api/courriers/suggestions/", {"champ": "service_interne"}).data
+        self.assertEqual(services[0], "DRH")  # le plus fréquent en tête
+        self.assertIn("CMS", services)
+        correspondants = self.client.get("/api/courriers/suggestions/", {"champ": "correspondant"}).data
+        self.assertEqual(correspondants[0], "Direction Générale")
+
+    def test_suggestions_champ_non_autorise(self):
+        response = self.client.get("/api/courriers/suggestions/", {"champ": "objet"})
+        self.assertEqual(response.data, [])

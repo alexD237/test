@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import client from "../api/client";
 import { PageHeader } from "../components/Layout";
+import ChampAutocomplete from "../components/ChampAutocomplete";
 import "./Registre.css";
-
-const SERVICES = ["DRH", "Service Personnel", "Formation", "CMS", "DG", "Autre"];
-const SIGNATAIRES = ["DRH", "DG", "Chef de service", "Autre"];
 
 const FILTRES_VIDES = {
   q: "",
@@ -78,22 +76,19 @@ export default function Registre() {
             onChange={(e) => setFiltre("numero", e.target.value)}
           />
           {entrant ? (
-            <select value={filtres.service} onChange={(e) => setFiltre("service", e.target.value)}>
-              <option value="">Tout service</option>
-              {SERVICES.map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-            </select>
+            <ChampAutocomplete
+              champ="service_interne"
+              placeholder="Tout service"
+              value={filtres.service}
+              onChange={(e) => setFiltre("service", e.target.value)}
+            />
           ) : (
-            <select
+            <ChampAutocomplete
+              champ="signataire"
+              placeholder="Tout signataire"
               value={filtres.signataire}
               onChange={(e) => setFiltre("signataire", e.target.value)}
-            >
-              <option value="">Tout signataire</option>
-              {SIGNATAIRES.map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-            </select>
+            />
           )}
           <input
             type="date"

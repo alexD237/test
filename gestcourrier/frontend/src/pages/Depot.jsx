@@ -2,10 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import client from "../api/client";
 import { PageHeader } from "../components/Layout";
+import ChampAutocomplete from "../components/ChampAutocomplete";
 import "./Depot.css";
 
-const SERVICES = ["DRH", "Service Personnel", "Formation", "CMS", "DG", "Autre"];
-const SIGNATAIRES = ["DRH", "DG", "Chef de service", "Autre"];
 const aujourdhui = new Date().toISOString().slice(0, 10);
 
 const VIDE = {
@@ -13,8 +12,8 @@ const VIDE = {
   type_courrier: "ENTRANT",
   date_courrier: aujourdhui,
   correspondant: "",
-  service_interne: "DRH",
-  signataire: "DRH",
+  service_interne: "",
+  signataire: "",
   objet: "",
   annotations_directeur: "",
   observation: "",
@@ -120,7 +119,8 @@ export default function Depot() {
               <label htmlFor="correspondant">
                 {entrant ? "Expéditeur *" : "Destinataire *"}
               </label>
-              <input
+              <ChampAutocomplete
+                champ="correspondant"
                 id="correspondant"
                 value={form.correspondant}
                 onChange={(e) => set("correspondant", e.target.value)}
@@ -130,28 +130,22 @@ export default function Depot() {
             {entrant ? (
               <div className="field">
                 <label htmlFor="service">Service destinataire *</label>
-                <select
+                <ChampAutocomplete
+                  champ="service_interne"
                   id="service"
                   value={form.service_interne}
                   onChange={(e) => set("service_interne", e.target.value)}
-                >
-                  {SERVICES.map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
-                </select>
+                />
               </div>
             ) : (
               <div className="field">
                 <label htmlFor="signataire">Signataire *</label>
-                <select
+                <ChampAutocomplete
+                  champ="signataire"
                   id="signataire"
                   value={form.signataire}
                   onChange={(e) => set("signataire", e.target.value)}
-                >
-                  {SIGNATAIRES.map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
-                </select>
+                />
               </div>
             )}
           </div>
