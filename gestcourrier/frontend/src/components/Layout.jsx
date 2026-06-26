@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import useInactivityLogout from "../hooks/useInactivityLogout";
 import WaveDivider from "./WaveDivider";
 import logo from "../assets/logo-pad.png";
 import "./Layout.css";
@@ -26,6 +27,8 @@ export default function Layout() {
     navigate("/login", { replace: true });
   }
 
+  useInactivityLogout(onLogout);
+
   return (
     <div className="layout">
       <aside className="sidebar">
@@ -33,7 +36,7 @@ export default function Layout() {
           <img src={logo} alt="Port Autonome de Douala" className="sidebar-logo" />
           <div>
             <span className="sidebar-eyebrow">PAD · DRH</span>
-            <strong>GestCourrier</strong>
+            <strong>ArchivRH</strong>
           </div>
         </div>
         <nav className="sidebar-nav">

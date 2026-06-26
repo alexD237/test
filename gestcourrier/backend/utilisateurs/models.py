@@ -13,6 +13,8 @@ class Utilisateur(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nom_complet = models.CharField(max_length=200)
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.AGENT)
+    echecs_connexion = models.PositiveIntegerField(default=0)
+    verrouille_jusqu = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.username} ({self.role})"

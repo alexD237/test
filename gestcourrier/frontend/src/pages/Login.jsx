@@ -30,7 +30,7 @@ export default function Login() {
     <div className="login-page">
       <form className="login-card" onSubmit={onSubmit}>
         <img src={logo} alt="Port Autonome de Douala" className="login-logo" />
-        <h1>GestCourrier DRH</h1>
+        <h1>ArchivRH</h1>
         <p className="login-sub">Numérisation et archivage des courriers</p>
 
         <div className="field">

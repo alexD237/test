@@ -45,6 +45,40 @@ class AuthTests(APITestCase):
         self.assertIn("access", response.data)
 
 
+class EntetesSecuriteTests(APITestCase):
+    def test_entetes_presents(self):
+        response = self.client.get("/api/courriers/")
+        self.assertIn("Content-Security-Policy", response)
+        self.assertEqual(response["X-Content-Type-Options"], "nosniff")
+        self.assertEqual(response["Referrer-Policy"], "same-origin")
+
+
+class VerrouillageTests(APITestCase):
+    def setUp(self):
+        self.user = Utilisateur.objects.create_user(
+            username="5487-T", password="bonmotdepasse", nom_complet="Jean", role=Utilisateur.Role.AGENT
+        )
+
+    def echec(self):
+        return self.client.post("/api/auth/login/", {"username": "5487-T", "password": "faux"})
+
+    def test_verrouillage_apres_cinq_echecs(self):
+        for _ in range(4):
+            self.assertEqual(self.echec().status_code, 401)
+        self.assertEqual(self.echec().status_code, 401)
+        # 5e échec atteint -> compte verrouillé, même le bon mot de passe est refusé.
+        bloque = self.client.post("/api/auth/login/", {"username": "5487-T", "password": "bonmotdepasse"})
+        self.assertEqual(bloque.status_code, 429)
+
+    def test_succes_remet_le_compteur_a_zero(self):
+        self.echec()
+        self.echec()
+        self.client.post("/api/auth/login/", {"username": "5487-T", "password": "bonmotdepasse"})
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.echecs_connexion, 0)
+        self.assertIsNone(self.user.verrouille_jusqu)
+
+
 class BaseAdmin(APITestCase):
     def setUp(self):
         media = tempfile.mkdtemp()
