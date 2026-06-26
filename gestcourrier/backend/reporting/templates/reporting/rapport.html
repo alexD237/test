@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { margin: 2.5cm 2cm; }
+  body { font-family: sans-serif; color: #0e1f3d; }
+  h1 { color: #1c3d78; font-size: 22px; margin-bottom: 0; }
+  .sous-titre { color: #3a4a63; font-size: 14px; margin-top: 4px; }
+  .chiffres { display: flex; gap: 24px; margin: 24px 0; }
+  .chiffre { border: 1px solid #c9d3e0; border-radius: 6px; padding: 12px 18px; }
+  .chiffre .valeur { font-size: 26px; font-weight: bold; color: #1c3d78; }
+  .chiffre .label { font-size: 12px; color: #3a4a63; }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid #e1e6ee; font-size: 13px; }
+  th { background: #1c3d78; color: #fff; }
+  h2 { font-size: 15px; color: #1c3d78; margin-top: 28px; }
+</style>
+</head>
+<body>
+  <h1>Port Autonome de Douala — Direction des Ressources Humaines</h1>
+  <p class="sous-titre">Rapport mensuel du courrier — {{ nom_mois }} {{ annee }}</p>
+
+  <div class="chiffres">
+    <div class="chiffre"><div class="valeur">{{ total }}</div><div class="label">Courriers traités</div></div>
+    <div class="chiffre"><div class="valeur">{{ total_entrants }}</div><div class="label">Entrants</div></div>
+    <div class="chiffre"><div class="valeur">{{ total_sortants }}</div><div class="label">Sortants</div></div>
+    <div class="chiffre"><div class="valeur">{{ taux_numerise }}%</div><div class="label">Numérisés (avec PDF)</div></div>
+  </div>
+
+  <h2>Courriers entrants par service destinataire</h2>
+  <table>
+    <thead><tr><th>Service</th><th>Total</th></tr></thead>
+    <tbody>
+      {% for ligne in par_service %}
+      <tr><td>{{ ligne.service_interne }}</td><td>{{ ligne.total }}</td></tr>
+      {% empty %}
+      <tr><td colspan="2">Aucun courrier entrant ce mois-ci.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Courriers sortants par signataire</h2>
+  <table>
+    <thead><tr><th>Signataire</th><th>Total</th></tr></thead>
+    <tbody>
+      {% for ligne in par_signataire %}
+      <tr><td>{{ ligne.signataire }}</td><td>{{ ligne.total }}</td></tr>
+      {% empty %}
+      <tr><td colspan="2">Aucun courrier sortant ce mois-ci.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

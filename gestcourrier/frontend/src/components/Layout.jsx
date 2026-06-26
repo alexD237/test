@@ -5,6 +5,7 @@ import "./Layout.css";
 const NAV = [
   { to: "/", label: "Registre", end: true },
   { to: "/depot", label: "Déposer un courrier" },
+  { to: "/reporting", label: "Reporting" },
 ];
 
 export default function Layout() {

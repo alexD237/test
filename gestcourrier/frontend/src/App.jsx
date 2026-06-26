@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Registre from "./pages/Registre";
 import Depot from "./pages/Depot";
 import Fiche from "./pages/Fiche";
+import Reporting from "./pages/Reporting";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="/" element={<Registre />} />
             <Route path="/depot" element={<Depot />} />
             <Route path="/courriers/:id" element={<Fiche />} />
+            <Route path="/reporting" element={<Reporting />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
