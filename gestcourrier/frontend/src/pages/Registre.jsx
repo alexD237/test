@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import client from "../api/client";
 import { PageHeader } from "../components/Layout";
 import ChampAutocomplete from "../components/ChampAutocomplete";
+import Spinner from "../components/Spinner";
 import "./Registre.css";
 
 const FILTRES_VIDES = {
@@ -41,6 +42,16 @@ export default function Registre() {
 
   function changerTri(colonne) {
     setTri((t) => (t === colonne ? `-${colonne}` : colonne));
+  }
+
+  function enTete(colonne, libelle) {
+    const actif = tri.replace("-", "") === colonne;
+    return (
+      <th className={actif ? "tri actif" : "tri"} onClick={() => changerTri(colonne)}>
+        {libelle}
+        {actif && <span className="fleche">{tri.startsWith("-") ? "▼" : "▲"}</span>}
+      </th>
+    );
   }
 
   const totalPages = Math.max(1, Math.ceil(data.count / 20));
@@ -119,7 +130,7 @@ export default function Registre() {
         </div>
 
         {chargement ? (
-          <p>Chargement…</p>
+          <Spinner />
         ) : data.count === 0 ? (
           <p className="registre-vide">Aucun courrier ne correspond.</p>
         ) : (
@@ -127,13 +138,9 @@ export default function Registre() {
             <table className="registre">
               <thead>
                 <tr>
-                  <th className="tri" onClick={() => changerTri("numero")}>
-                    Numéro
-                  </th>
+                  {enTete("numero", "Numéro")}
                   <th>Type</th>
-                  <th className="tri" onClick={() => changerTri("date")}>
-                    Date
-                  </th>
+                  {enTete("date", "Date")}
                   <th>Correspondant</th>
                   <th>Objet</th>
                   <th>PDF</th>
@@ -153,7 +160,7 @@ export default function Registre() {
                     <td>{c.date_courrier}</td>
                     <td>{c.correspondant}</td>
                     <td className="registre-objet">{c.objet}</td>
-                    <td>{c.fichier_pdf ? "✓" : "—"}</td>
+                    <td>{c.fichier_pdf ? <span className="pdf-oui">✓</span> : "—"}</td>
                   </tr>
                 ))}
               </tbody>

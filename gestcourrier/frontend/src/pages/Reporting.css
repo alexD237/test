@@ -17,6 +17,7 @@
 .reporting-chiffre {
   background: var(--canvas);
   border-radius: var(--radius);
+  border-top: 3px solid var(--brand-lime);
   padding: 16px 22px;
   box-shadow: 0 1px 3px rgba(14, 31, 61, 0.08);
   display: flex;
@@ -32,6 +33,15 @@
 .reporting-chiffre .label {
   font-size: 13px;
   color: var(--fg2);
+}
+
+.reporting-graphe {
+  margin-bottom: 28px;
+}
+.reporting-graphe h2 {
+  font-size: 15px;
+  color: var(--brand-navy);
+  margin: 0 0 10px;
 }
 
 .reporting-tables {

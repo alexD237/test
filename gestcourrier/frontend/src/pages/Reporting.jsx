@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import client from "../api/client";
 import { PageHeader } from "../components/Layout";
+import BarChart from "../components/BarChart";
+import Spinner from "../components/Spinner";
 import "./Reporting.css";
 
 function moisActuel() {
@@ -46,7 +48,7 @@ export default function Reporting() {
         />
 
         {chargement ? (
-          <p>Chargement…</p>
+          <Spinner />
         ) : (
           <>
             <div className="reporting-chiffres">
@@ -67,6 +69,11 @@ export default function Reporting() {
                 <span className="label">Numérisés (avec PDF)</span>
               </div>
             </div>
+
+            <section className="reporting-graphe">
+              <h2>Volume hebdomadaire (entrants / sortants)</h2>
+              <BarChart data={data.par_semaine} />
+            </section>
 
             <div className="reporting-tables">
               <section>

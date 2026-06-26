@@ -59,6 +59,9 @@ class ReportingTests(APITestCase):
         self.assertEqual(data["taux_numerise"], 100.0)
         self.assertEqual(data["par_service"], [{"service_interne": "DRH", "total": 2}])
         self.assertEqual(data["par_signataire"], [{"signataire": "DG", "total": 1}])
+        # Tous déposés le 10 du mois -> semaine 2.
+        self.assertEqual(data["par_semaine"][1], {"semaine": 2, "entrants": 2, "sortants": 1})
+        self.assertEqual(len(data["par_semaine"]), 5)
 
     def test_mois_sans_courrier(self):
         response = self.client.get("/api/reporting/mensuel/", {"mois": "2020-01"})

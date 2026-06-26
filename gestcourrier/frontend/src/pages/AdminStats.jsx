@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import client from "../api/client";
 import { PageHeader } from "../components/Layout";
+import Spinner from "../components/Spinner";
 import "./Admin.css";
 import "./Reporting.css";
 
@@ -18,7 +19,12 @@ export default function AdminStats() {
     client.get("/admin/stats-systeme/").then((res) => setStats(res.data));
   }, []);
 
-  if (!stats) return <div className="page">Chargement…</div>;
+  if (!stats)
+    return (
+      <div className="page">
+        <Spinner />
+      </div>
+    );
 
   const cartes = [
     { valeur: stats.nombre_fichiers, label: "Fichiers PDF stockés" },

@@ -114,6 +114,38 @@ a {
   font-family: var(--font-mono);
 }
 
+/* Message de succès accentué (or PAD) */
+.alert-succes {
+  background: #fbfce3;
+  border-left: 4px solid var(--brand-lime);
+  color: var(--fg1);
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* Indicateur de chargement */
+.chargement {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fg2);
+}
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid var(--border);
+  border-top-color: var(--brand-lime);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;

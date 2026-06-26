@@ -10,6 +10,7 @@
 .login-card {
   background: var(--canvas);
   border-radius: 12px;
+  border-top: 4px solid var(--brand-lime);
   padding: 40px;
   width: 100%;
   max-width: 380px;

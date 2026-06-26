@@ -5,6 +5,7 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import client from "../api/client";
 import { PageHeader } from "../components/Layout";
+import Spinner from "../components/Spinner";
 import "./Fiche.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -45,7 +46,12 @@ export default function Fiche() {
   }
 
   if (erreur) return <div className="page">{erreur}</div>;
-  if (!courrier) return <div className="page">Chargement…</div>;
+  if (!courrier)
+    return (
+      <div className="page">
+        <Spinner />
+      </div>
+    );
 
   const entrant = courrier.type_courrier === "ENTRANT";
 

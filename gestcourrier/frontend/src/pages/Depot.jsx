@@ -25,6 +25,7 @@ export default function Depot() {
   const [fichier, setFichier] = useState(null);
   const [erreurs, setErreurs] = useState({});
   const [enCours, setEnCours] = useState(false);
+  const [succes, setSucces] = useState(false);
 
   const entrant = form.type_courrier === "ENTRANT";
 
@@ -60,10 +61,10 @@ export default function Depot() {
     }
     try {
       await client.post("/courriers/", payload);
-      navigate("/");
+      setSucces(true);
+      setTimeout(() => navigate("/"), 1200);
     } catch (err) {
       setErreurs(err.response?.data || { detail: "Erreur lors du dépôt." });
-    } finally {
       setEnCours(false);
     }
   }
@@ -73,6 +74,7 @@ export default function Depot() {
       <PageHeader title="Déposer un courrier" />
       <div className="page">
         <form className="depot-form" onSubmit={onSubmit}>
+          {succes && <p className="alert-succes">Courrier enregistré ✓</p>}
           <div className="depot-type">
             {["ENTRANT", "SORTANT"].map((t) => (
               <label key={t} className={form.type_courrier === t ? "actif" : ""}>

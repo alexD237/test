@@ -9,6 +9,7 @@ export default function AdminUtilisateurs() {
   const [liste, setListe] = useState([]);
   const [form, setForm] = useState(VIDE);
   const [erreur, setErreur] = useState("");
+  const [succes, setSucces] = useState("");
 
   function charger() {
     client.get("/admin/utilisateurs/").then((res) => setListe(res.data.results || res.data));
@@ -19,8 +20,10 @@ export default function AdminUtilisateurs() {
   async function creer(e) {
     e.preventDefault();
     setErreur("");
+    setSucces("");
     try {
       await client.post("/admin/utilisateurs/", form);
+      setSucces(`Compte ${form.username} créé.`);
       setForm(VIDE);
       charger();
     } catch (err) {
@@ -69,6 +72,7 @@ export default function AdminUtilisateurs() {
             Créer le compte
           </button>
         </form>
+        {succes && <p className="alert-succes">{succes}</p>}
         {erreur && <p className="field-error">{erreur}</p>}
 
         <table className="admin-table">
@@ -92,7 +96,11 @@ export default function AdminUtilisateurs() {
                     <option value="ADMIN">Administrateur</option>
                   </select>
                 </td>
-                <td>{u.is_active ? "Actif" : "Désactivé"}</td>
+                <td>
+                  <span className={u.is_active ? "statut-actif" : "statut-inactif"}>
+                    {u.is_active ? "Actif" : "Désactivé"}
+                  </span>
+                </td>
                 <td className="admin-actions">
                   <button className="btn btn-ghost" onClick={() => modifier(u.id, { is_active: !u.is_active })}>
                     {u.is_active ? "Désactiver" : "Réactiver"}

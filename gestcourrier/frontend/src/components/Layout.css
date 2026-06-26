@@ -118,6 +118,15 @@
 .topbar h1 {
   font-size: 26px;
 }
+.topbar h1::after {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 3px;
+  margin-top: 8px;
+  background: var(--brand-lime);
+  border-radius: 2px;
+}
 .topbar-actions {
   display: flex;
   gap: 12px;

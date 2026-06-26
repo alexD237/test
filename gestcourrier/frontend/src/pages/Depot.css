@@ -23,8 +23,9 @@
   gap: 8px;
 }
 .depot-type label.actif {
-  border-color: var(--brand-sky);
-  background: #f0f9fd;
+  border-color: var(--brand-lime);
+  border-left-width: 4px;
+  background: #fbfce3;
 }
 
 .depot-grid {
