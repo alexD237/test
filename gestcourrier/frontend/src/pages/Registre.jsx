@@ -1,24 +1,52 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import client from "../api/client";
 import { PageHeader } from "../components/Layout";
 import "./Registre.css";
+
+const SERVICES = ["DRH", "Service Personnel", "Formation", "CMS", "DG", "Autre"];
+const SIGNATAIRES = ["DRH", "DG", "Chef de service", "Autre"];
+
+const FILTRES_VIDES = {
+  q: "",
+  type: "",
+  numero: "",
+  service: "",
+  signataire: "",
+  date_debut: "",
+  date_fin: "",
+  avec_pdf: "",
+};
 
 export default function Registre() {
   const navigate = useNavigate();
   const [data, setData] = useState({ results: [], count: 0 });
   const [page, setPage] = useState(1);
+  const [tri, setTri] = useState("-date");
+  const [filtres, setFiltres] = useState(FILTRES_VIDES);
   const [chargement, setChargement] = useState(true);
 
   useEffect(() => {
+    const params = { page, tri };
+    Object.entries(filtres).forEach(([k, v]) => v && (params[k] = v));
     setChargement(true);
     client
-      .get("/courriers/", { params: { page } })
+      .get("/courriers/", { params })
       .then((res) => setData(res.data))
       .finally(() => setChargement(false));
-  }, [page]);
+  }, [page, tri, filtres]);
+
+  function setFiltre(champ, valeur) {
+    setPage(1);
+    setFiltres((f) => ({ ...f, [champ]: valeur }));
+  }
+
+  function changerTri(colonne) {
+    setTri((t) => (t === colonne ? `-${colonne}` : colonne));
+  }
 
   const totalPages = Math.max(1, Math.ceil(data.count / 20));
+  const entrant = filtres.type !== "SORTANT";
 
   return (
     <>
@@ -31,18 +59,86 @@ export default function Registre() {
         }
       />
       <div className="page">
+        <div className="filtres">
+          <input
+            className="filtres-recherche"
+            placeholder="Rechercher (objet, correspondant, annotations…)"
+            value={filtres.q}
+            onChange={(e) => setFiltre("q", e.target.value)}
+          />
+          <select value={filtres.type} onChange={(e) => setFiltre("type", e.target.value)}>
+            <option value="">Tous les types</option>
+            <option value="ENTRANT">Entrant</option>
+            <option value="SORTANT">Sortant</option>
+          </select>
+          <input
+            className="mono"
+            placeholder="N° courrier"
+            value={filtres.numero}
+            onChange={(e) => setFiltre("numero", e.target.value)}
+          />
+          {entrant ? (
+            <select value={filtres.service} onChange={(e) => setFiltre("service", e.target.value)}>
+              <option value="">Tout service</option>
+              {SERVICES.map((s) => (
+                <option key={s}>{s}</option>
+              ))}
+            </select>
+          ) : (
+            <select
+              value={filtres.signataire}
+              onChange={(e) => setFiltre("signataire", e.target.value)}
+            >
+              <option value="">Tout signataire</option>
+              {SIGNATAIRES.map((s) => (
+                <option key={s}>{s}</option>
+              ))}
+            </select>
+          )}
+          <input
+            type="date"
+            title="Date début"
+            value={filtres.date_debut}
+            onChange={(e) => setFiltre("date_debut", e.target.value)}
+          />
+          <input
+            type="date"
+            title="Date fin"
+            value={filtres.date_fin}
+            onChange={(e) => setFiltre("date_fin", e.target.value)}
+          />
+          <select value={filtres.avec_pdf} onChange={(e) => setFiltre("avec_pdf", e.target.value)}>
+            <option value="">PDF : tous</option>
+            <option value="true">Avec PDF</option>
+            <option value="false">Sans PDF</option>
+          </select>
+          <button
+            className="btn btn-ghost"
+            onClick={() => {
+              setPage(1);
+              setFiltres(FILTRES_VIDES);
+            }}
+          >
+            Réinitialiser
+          </button>
+        </div>
+
         {chargement ? (
           <p>Chargement…</p>
         ) : data.count === 0 ? (
-          <p className="registre-vide">Aucun courrier enregistré.</p>
+          <p className="registre-vide">Aucun courrier ne correspond.</p>
         ) : (
           <>
             <table className="registre">
               <thead>
                 <tr>
-                  <th>Numéro</th>
+                  <th className="tri" onClick={() => changerTri("numero")}>
+                    Numéro
+                  </th>
                   <th>Type</th>
-                  <th>Date</th>
+                  <th className="tri" onClick={() => changerTri("date")}>
+                    Date
+                  </th>
                   <th>Correspondant</th>
                   <th>Objet</th>
                   <th>PDF</th>
@@ -51,7 +147,9 @@ export default function Registre() {
               <tbody>
                 {data.results.map((c) => (
                   <tr key={c.id}>
-                    <td className="mono">{c.numero}</td>
+                    <td className="mono">
+                      <Link to={`/courriers/${c.id}`}>{c.numero}</Link>
+                    </td>
                     <td>
                       <span className={`badge badge-${c.type_courrier.toLowerCase()}`}>
                         {c.type_courrier === "ENTRANT" ? "Entrant" : "Sortant"}

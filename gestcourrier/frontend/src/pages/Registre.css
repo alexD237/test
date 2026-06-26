@@ -1,3 +1,37 @@
+.filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+.filtres input,
+.filtres select {
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--canvas);
+}
+.filtres input:focus-visible,
+.filtres select:focus-visible {
+  outline: 3px solid var(--brand-sky);
+  outline-offset: 1px;
+}
+.filtres-recherche {
+  flex: 1;
+  min-width: 240px;
+}
+
+.registre .tri {
+  cursor: pointer;
+  user-select: none;
+}
+.registre .tri:hover {
+  color: var(--brand-lime);
+}
+
 .registre {
   width: 100%;
   border-collapse: collapse;
